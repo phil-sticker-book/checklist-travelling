@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Family Trip Packing List</title>
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Smooth transitions for color changes */
@@ -15,9 +16,11 @@
 <body class="bg-gray-100 min-h-screen font-sans">
 
     <div class="max-w-md mx-auto p-4">
+        <!-- HEADER / HOME NAVIGATION -->
         <header class="text-center my-6">
             <h1 class="text-3xl font-bold text-gray-800 mb-4">🧳 Trip Packing List</h1>
             
+            <!-- Navigation Tabs (Home Page Swapper) -->
             <div class="flex justify-between bg-white rounded-xl p-1 shadow-md">
                 <button onclick="switchTab('daddy')" id="tab-daddy" class="flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-200 bg-blue-600 text-white">
                     Daddy
@@ -32,16 +35,19 @@
         </header>
 
         <main>
+            <!-- DADDY'S LIST -->
             <section id="list-daddy" class="tab-content block">
                 <h2 class="text-xl font-bold text-gray-700 mb-4 px-1">Daddy's Items</h2>
                 <div id="container-daddy" class="space-y-2"></div>
             </section>
 
+            <!-- PAPA'S LIST -->
             <section id="list-papa" class="tab-content hidden">
                 <h2 class="text-xl font-bold text-gray-700 mb-4 px-1">Papa's Items</h2>
                 <div id="container-papa" class="space-y-2"></div>
             </section>
 
+            <!-- KAYDEN'S LIST -->
             <section id="list-kayden" class="tab-content hidden">
                 <h2 class="text-xl font-bold text-gray-700 mb-4 px-1">Kayden's Items</h2>
                 <div id="container-kayden" class="space-y-2"></div>
@@ -57,7 +63,8 @@
                 "hair brush", "eye drops", "wallet", "passport", "flight ticket", 
                 "ID card", "driving license", "laptop", "laptop charger", "adapter", 
                 "phone charger", "tablet", "kindle", "downloaded content", "headphones", 
-                "mouse", "keyboard", "lactose pills", "daily medicine box", "swim suits"
+                "mouse", "keyboard", "lactose pills", "daily medicine box", "swim suits",
+                "Mounjaro/Wegovy"
             ],
             papa: [
                 "Sertraline", "swim suit", "tooth brush", "perfume", "deodorant", 
@@ -89,7 +96,6 @@
 
             // Set active tab button style
             const activeTab = document.getElementById(`tab-${person}`);
-            activeTab.classList.clear;
             activeTab.className = "flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-200 bg-blue-600 text-white";
         }
 
@@ -142,7 +148,7 @@
                 textSpan.classList.remove('line-through', 'opacity-60');
                 iconSpan.textContent = "❌";
                 
-                // Move back to the top section (before the first already packed item)
+                // Move back to the top section
                 const firstPacked = container.querySelector('[data-packed="true"]');
                 if (firstPacked) {
                     container.insertBefore(element, firstPacked);
