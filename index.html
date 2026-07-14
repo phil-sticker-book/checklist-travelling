@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Trip Packing List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Smooth transitions for color changes */
+        .item-box {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+
+    <div class="max-w-md mx-auto p-4">
+        <header class="text-center my-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">🧳 Trip Packing List</h1>
+            
+            <div class="flex justify-between bg-white rounded-xl p-1 shadow-md">
+                <button onclick="switchTab('daddy')" id="tab-daddy" class="flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-200 bg-blue-600 text-white">
+                    Daddy
+                </button>
+                <button onclick="switchTab('papa')" id="tab-papa" class="flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-200 text-gray-600 hover:bg-gray-200">
+                    Papa
+                </button>
+                <button onclick="switchTab('kayden')" id="tab-kayden" class="flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-200 text-gray-600 hover:bg-gray-200">
+                    Kayden
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <section id="list-daddy" class="tab-content block">
+                <h2 class="text-xl font-bold text-gray-700 mb-4 px-1">Daddy's Items</h2>
+                <div id="container-daddy" class="space-y-2"></div>
+            </section>
+
+            <section id="list-papa" class="tab-content hidden">
+                <h2 class="text-xl font-bold text-gray-700 mb-4 px-1">Papa's Items</h2>
+                <div id="container-papa" class="space-y-2"></div>
+            </section>
+
+            <section id="list-kayden" class="tab-content hidden">
+                <h2 class="text-xl font-bold text-gray-700 mb-4 px-1">Kayden's Items</h2>
+                <div id="container-kayden" class="space-y-2"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Data arrays for each person
+        const packingData = {
+            daddy: [
+                "toothbrush", "perfume", "deodorant", "hair cream", "beard cream", 
+                "hair brush", "eye drops", "wallet", "passport", "flight ticket", 
+                "ID card", "driving license", "laptop", "laptop charger", "adapter", 
+                "phone charger", "tablet", "kindle", "downloaded content", "headphones", 
+                "mouse", "keyboard", "lactose pills", "daily medicine box", "swim suits"
+            ],
+            papa: [
+                "Sertraline", "swim suit", "tooth brush", "perfume", "deodorant", 
+                "passport", "driving license"
+            ],
+            kayden: [
+                "Inhaler", "swim suit", "blanket", "car seat", "tooth brush", 
+                "tooth paste", "Weetabix", "tablet", "downloaded content", "toy", 
+                "distraction for plane", "sunscreen", "hat", "rain coat", "crocs or flip flops"
+            ]
+        };
+
+        // Switch between profile views
+        function switchTab(person) {
+            // Hide all lists
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('block'));
+            
+            // Show selected list
+            document.getElementById(`list-${person}`).classList.remove('hidden');
+            document.getElementById(`list-${person}`).classList.add('block');
+
+            // Reset tab button styles
+            ['daddy', 'papa', 'kayden'].forEach(p => {
+                const tab = document.getElementById(`tab-${p}`);
+                tab.classList.remove('bg-blue-600', 'text-white');
+                tab.classList.add('text-gray-600', 'hover:bg-gray-200');
+            });
+
+            // Set active tab button style
+            const activeTab = document.getElementById(`tab-${person}`);
+            activeTab.classList.clear;
+            activeTab.className = "flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-200 bg-blue-600 text-white";
+        }
+
+        // Initialize lists on page load
+        function initLists() {
+            for (const person in packingData) {
+                const container = document.getElementById(`container-${person}`);
+                
+                packingData[person].forEach((item, index) => {
+                    // Create wrapper div (text box style)
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = "item-box flex items-center justify-between p-4 bg-red-100 border border-red-300 text-red-800 rounded-lg cursor-pointer shadow-sm select-none hover:bg-red-200";
+                    itemDiv.dataset.packed = "false";
+                    
+                    // Capitalize first letter for display
+                    const cleanName = item.charAt(0).toUpperCase() + item.slice(1);
+
+                    itemDiv.innerHTML = `
+                        <span class="font-medium list-text">${cleanName}</span>
+                        <span class="status-icon text-lg">❌</span>
+                    `;
+
+                    // Add click event to toggle state
+                    itemDiv.addEventListener('click', () => toggleItem(itemDiv, container));
+                    
+                    container.appendChild(itemDiv);
+                });
+            }
+        }
+
+        // Toggle packed state, change colors, and move to bottom if packed
+        function toggleItem(element, container) {
+            const isPacked = element.dataset.packed === "true";
+            const textSpan = element.querySelector('.list-text');
+            const iconSpan = element.querySelector('.status-icon');
+
+            if (!isPacked) {
+                // Switch to Green (Packed)
+                element.dataset.packed = "true";
+                element.className = "item-box flex items-center justify-between p-4 bg-green-100 border border-green-300 text-green-800 rounded-lg cursor-pointer shadow-sm select-none hover:bg-green-200";
+                textSpan.classList.add('line-through', 'opacity-60');
+                iconSpan.textContent = "✅";
+                
+                // Move smoothly to the bottom of the list
+                container.appendChild(element);
+            } else {
+                // Switch back to Red (Unpacked)
+                element.dataset.packed = "false";
+                element.className = "item-box flex items-center justify-between p-4 bg-red-100 border border-red-300 text-red-800 rounded-lg cursor-pointer shadow-sm select-none hover:bg-red-200";
+                textSpan.classList.remove('line-through', 'opacity-60');
+                iconSpan.textContent = "❌";
+                
+                // Move back to the top section (before the first already packed item)
+                const firstPacked = container.querySelector('[data-packed="true"]');
+                if (firstPacked) {
+                    container.insertBefore(element, firstPacked);
+                } else {
+                    container.appendChild(element);
+                }
+            }
+        }
+
+        // Run setup
+        initLists();
+    </script>
+</body>
+</html>
